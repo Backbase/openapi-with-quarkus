@@ -1,6 +1,6 @@
 # OpenApi Generator Usage on Sample Quarkus Application
 
-This example covers the approach adopted on the Natwest Identity project when generating API clients with Resteasy for
+This example covers the approach adopted on an Identity project when generating API clients with Resteasy for
 **Identity Service Provider Interfaces** which they are using Quarkus native libraries.
 
 For **Spring**, with the help of the **boat-plugin**, we have the default configuration to use open-api-generator with
