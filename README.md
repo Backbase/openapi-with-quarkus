@@ -51,6 +51,7 @@ found [here](https://raw.githubusercontent.com/redhat-appdev-practice/todo-api/t
             <dateLibrary>java8</dateLibrary>
             <openApiNullable>false</openApiNullable>
             <invokerPackage>org.quarkus.openapi.todo.api</invokerPackage>
+            <useJakartaEe>true</useJakartaEe>
         </configOptions>
     </configuration>
 </plugin>
