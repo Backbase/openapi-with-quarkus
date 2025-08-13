@@ -143,13 +143,9 @@ public class TodoApiConfigFactory {
 ```
 
 ## Tracing
-It’s becoming more important than ever before to be able to see what’s going on inside our requests as they span across multiple microservices.
+After upgrading Quarkus dependencies, the tracing implementation has been simplified. The previous OpenTracing integration has been removed in favor of a more streamlined approach.
 
-As a first step, we need to create **ApiClient** with the base path. After that, we can register our newly created ApiClient to the **OpenTracing.**
-
-We are using **JAXRS Default Client Builder** to create **JAXRS** Client.
-OpenTracing's **Global Tracer** is used for this sample quarkus application.
-
+As a first step, we need to create **ApiClient** with the base path. We are using **JAXRS Default Client Builder** to create **JAXRS** Client.
 
 If any logger is defined for debugging in ApiClient class, the logger class will be registered while creating **JAXRS** Client.
 Last step is setting the HttpClient. An HttpClient can be used to send requests and retrieve their responses. An HttpClient is created through a builder.
@@ -159,13 +155,13 @@ Last step is setting the HttpClient. An HttpClient can be used to send requests 
 ```java
     /**
      * Getting ApiClient configured for given tenant.
+     *
+     * @param basePath url path to given resource
+     * @return {@link ApiClient}
      */
     public static ApiClient createTraceApiClient(String basePath) {
         ApiClient apiClient = new ApiClient().setBasePath(basePath);
-        Tracer tracer = GlobalTracer.get();
         ClientBuilder clientBuilder = ClientBuilder.newBuilder()
-            .executorService(new TracedExecutorService(Executors.newCachedThreadPool(), tracer))
-            .register(new SmallRyeClientTracingFeature(tracer))
             .register(apiClient.getJSON());
 
         if (LoggerFactory.getLogger(ApiClient.class).isDebugEnabled()) {
@@ -198,13 +194,13 @@ For this sample-app, second option through a custom HTTP header called **'X-TID'
 
     /**
      * Getting ApiClient configured for given tenant.
+     *
+     * @param basePath url path to given resource
+     * @return {@link ApiClient}
      */
     public static ApiClient createTraceApiClient(String basePath) {
         ApiClient apiClient = new ApiClient().setBasePath(basePath);
-        Tracer tracer = GlobalTracer.get();
         ClientBuilder clientBuilder = ClientBuilder.newBuilder()
-            .executorService(new TracedExecutorService(Executors.newCachedThreadPool(), tracer))
-            .register(new SmallRyeClientTracingFeature(tracer))
             .register(apiClient.getJSON());
 
         if (LoggerFactory.getLogger(ApiClient.class).isDebugEnabled()) {
@@ -216,6 +212,10 @@ For this sample-app, second option through a custom HTTP header called **'X-TID'
 
     /**
      * Getting ApiClient configured for given tenant (or without tenant if tenantId is null).
+     *
+     * @param tenantId id of given tenant
+     * @param basePath url path to given resource
+     * @return {@link ApiClient}
      */
     public static ApiClient createTenantApiClient(String tenantId, String basePath) {
         ApiClient apiClient = createTraceApiClient(basePath);
@@ -228,7 +228,7 @@ For this sample-app, second option through a custom HTTP header called **'X-TID'
 }
 ```
 
-After the trace api client is created, the custom **HTTP request header** (**X-TID**) is added. 
+After the trace api client is created, the custom **HTTP request header** (**X-TID**) is added.
 
 ## Tests
 We have basic tests for Factory classes, TodoApiConfig and Provider class to ensure that our ApiClient and ApiConfig are initialized correctly.

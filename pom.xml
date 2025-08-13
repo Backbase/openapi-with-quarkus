@@ -9,7 +9,7 @@
     <properties>
         <codegen.openapi.generated-sources-dir>${generated-sources-dir}/openapi</codegen.openapi.generated-sources-dir>
         <generated-sources-dir>${project.build.directory}/generated-sources</generated-sources-dir>
-        <keycloak-dependency.version>26.1.4</keycloak-dependency.version>
+        <keycloak-dependency.version>26.3.2</keycloak-dependency.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
